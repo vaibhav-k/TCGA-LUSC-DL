@@ -1,0 +1,102 @@
+case_id,age_at_diagnosis,ajcc_pathologic_stage,primary_diagnosis,prior_malignancy,prior_treatment,synchronous_malignancy,tissue_or_organ_of_origin,treatment_or_therapy
+7d8d5dff-bdc1-4000-bc52-1fc3be3f6da4,26039,Stage IIA,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+eca4bfa2-5ba5-4708-959a-d901c1b61edd,21646,Stage IIIA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+0d6a7cdf-daf5-4181-864f-430952e6fdb3,27099,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Lung, NOS",no
+9eb34055-0e33-4b3a-827b-d7108b5b0629,25955,Stage IA,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+7d3e77cc-9603-4722-8e39-1912b678871b,25574,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,Main bronchus,no
+e487c72f-2cb4-4a88-bd69-cd006d5b4c1a,20529,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+55bafaad-323b-4b92-813e-52d18d70fc3e,23821,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",yes
+15b0bfd4-2068-4ac8-aaa8-a2a6797253d8,23855,Stage IIA,Papillary squamous cell carcinoma,no,No,No,"Upper lobe, lung",yes
+9f55bb37-4211-4e91-88ea-7b1d4f286598,21646,Stage IA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+ce7dcb92-13aa-4496-82d2-873b53647bfd,24891,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+0f5cebb3-a37b-471f-bbd3-b03ce171812a,24602,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+6467bc69-4e89-49f6-8912-fa86d513cf51,25297,Stage IA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+870fb708-7631-4578-a470-3c7bd5228e5a,21642,Stage IIA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+fd8a7339-cf34-4b91-bfc4-53ce60ffd737,25637,Stage IIA,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+d5c24c76-2e98-41df-b17d-b53c0b5e7787,22017,Stage IIB,"Squamous cell carcinoma, NOS",yes,No,No,"Upper lobe, lung",yes
+aa53c701-4b65-4c26-a6f0-02a4498717a8,20948,Stage IIIA,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+d9b6a10e-ab02-47d9-a6c2-bb0c80238d29,27509,Stage IIIA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+185923c0-e642-41c4-a22e-0dae102b0a40,30404,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+ec260f86-7186-4bf2-9de9-320b4ca155a4,22671,Stage IA,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+b3a6edcd-6592-44fb-9ec1-037138bfbdaf,27064,Stage IA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+e7d1b042-5b1c-4c29-b501-a5ef4810ecd2,26681,Stage IIB,Basaloid squamous cell carcinoma,no,No,No,"Upper lobe, lung",yes
+be5dcf02-8097-4a97-af32-6a9b02c079d3,26664,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+a3e1ac67-a1f2-44fb-8343-a7e8239fc24a,17282,Stage IIIA,"Squamous cell carcinoma, NOS",no,No,No,Main bronchus,no
+b9a81947-0348-4fe6-a0ac-d674cd13aa99,24163,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+7ff92b3b-e810-42e2-9aa3-3e2335bb0f4a,26671,Stage IIIB,"Squamous cell carcinoma, NOS",no,No,No,"Lung, NOS",yes
+2a0b4559-5ece-4b79-9c89-2ebe7cf82905,29684,Stage IA,"Squamous cell carcinoma, NOS",yes,No,No,"Upper lobe, lung",no
+fadd20a1-90ca-4d99-a128-9730d02a7bd6,23455,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+761d1c28-d5f5-497c-b9a0-86263ec62979,20168,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Lung, NOS",no
+b9817e22-ec5f-4a66-bf24-0f9fd9d3231e,20213,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+381edbe7-f391-4154-b16e-ac91d550582e,21611,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+d484c95f-5128-4239-a6e5-1496de39ba4b,28595,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+c179d6b1-6182-48b8-a376-3133e0dec278,21572,Stage IIIA,Basaloid squamous cell carcinoma,no,No,No,"Lower lobe, lung",yes
+31798d61-fb34-49dc-a20e-091c1a20eb6a,21917,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+e7d1b042-5b1c-4c29-b501-a5ef4810ecd2,26681,Stage IIB,Basaloid squamous cell carcinoma,no,No,No,"Upper lobe, lung",no
+f2e35ffc-c87a-4e42-9c8d-e7e5d8b49d87,25636,Stage IA,"Squamous cell carcinoma, NOS",yes,No,No,"Lower lobe, lung",no
+469eba45-5046-4d8a-9f9a-dfbd1e7cf560,26765,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+3666bc65-8e40-409e-9a1f-41583dd6d978,21918,Stage IIA,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+a57414a5-fcdb-47b5-b07e-edc7dc460783,21603,Stage IA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+e58e8850-154f-4695-bee0-005c76410327,23468,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+26556020-3daf-4b8b-a3de-c0532c96aca0,24129,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+ba42da22-44c2-488f-91f0-e274948b5cef,27754,Stage IIIA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+2f39e89c-a8f7-4df8-a0f5-ef9990c2133c,24569,Stage IIIA,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",yes
+f8733921-44bc-4c62-8b2d-33a9b82ef665,26381,Stage IA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+4fbf2497-0774-4599-8c90-1961612b8e3a,25666,Stage IIIB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+dca4c540-897f-435b-9ee2-8f5b2e8734c6,26047,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+e88eb552-addc-4030-9c54-4bf7d381a703,25282,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+6a2ce004-8a2d-419f-9738-e352d298a315,27413,Stage II,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+442c412d-6cc5-4ffd-810c-c94c8e643bd6,22281,Stage IIA,"Squamous cell carcinoma, NOS",yes,No,No,Main bronchus,no
+9101d953-1eb6-4808-aa44-a7b04e0ef412,27127,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+cf3cdd9e-43fc-44c7-90c8-e4e13deed9c6,23101,Stage IA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+f7287eb4-c77d-4c67-a768-87fcccd668f5,17238,Stage IIIA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+07083473-8835-4bf9-9f52-b15bba59d932,32872,Stage IB,"Squamous cell carcinoma, keratinizing, NOS",yes,No,No,"Upper lobe, lung",no
+636d0804-8a63-4bd0-86b4-dc1dc71da8b7,26389,Stage IA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+fd9ee494-65fe-4de4-adff-7952a059b17f,22710,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+5d7a6807-e024-479d-a4df-1d44af41fa66,28128,Stage IA,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+a2d7c06b-efa9-4b7e-9ea6-b47c9ad6ef38,25699,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+45aa07c3-cea4-456e-8000-b4572a2163a8,25620,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+23421041-fc75-4610-8a59-3246fb6df7e8,26008,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+1535c8ab-100d-4886-8598-12a94483d010,22039,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+9ee64a87-7224-461c-94da-29710d73164f,27102,Stage IB,"Squamous cell carcinoma, NOS",yes,No,No,"Upper lobe, lung",no
+ad112acb-d241-48a0-8e48-d69cdc3feba8,17285,Stage IIIA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+159b96ab-2eb9-4604-be8c-e38f6aae103f,24590,Stage IIIA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+2c89b366-c394-4067-bbb0-f24f5920ecaa,20894,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+42f86ec9-85a0-4015-990c-be445f532197,25622,Stage IIIA,"Squamous cell carcinoma, keratinizing, NOS",no,No,No,"Upper lobe, lung",yes
+7b236171-2e7a-4018-b297-560ea8279ec0,21254,Stage IIA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+f43b511b-93d1-4a6e-ab17-e84448a084b2,20887,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+b838706d-01e9-45aa-869d-a94168773bcd,20175,Stage IIA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+b0818bee-c32c-405c-ba09-956091fbe09b,31052,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+fe49127a-8402-4479-afff-801c6452de25,19014,Stage IB,Basaloid squamous cell carcinoma,no,No,No,"Lower lobe, lung",no
+ce137f49-d12b-4112-825a-e673545f54e5,27762,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+05d4d9c7-fb6f-439a-bb97-f0e2737a7773,24885,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+26556020-3daf-4b8b-a3de-c0532c96aca0,24129,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+644f0c64-c710-4faa-ada5-cbb9a52acf93,22769,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+0cca2b84-62bb-41c6-a65d-c27e4e98af78,28560,Stage IIA,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",yes
+e28cbc9a-aa60-4bfb-8d89-8c33ee97f560,23857,Stage IV,"Squamous cell carcinoma, NOS",no,No,No,"Lung, NOS",no
+1a49a131-d714-40d7-85b6-c4822c0c6264,23066,Stage I,"Squamous cell carcinoma, NOS",yes,No,No,"Lower lobe, lung",no
+d38dbe20-bd5a-45d5-8db3-d5f777b454b6,20869,'--,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+02ba8600-9d3d-489d-9f0b-f1c59085ecd6,24534,Stage IV,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+b5e2cbda-bbfa-4ef8-a9c4-cb978bef9b23,30678,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+f30d81c6-d8d3-4547-b056-3942e390b936,26774,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+9a874b64-d0d6-416e-97bc-e9071ed0b16b,28250,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+d11c4976-ba19-4616-be79-d1e321c26d07,23873,Stage IIIA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+513c5f34-dc6e-4caa-81cc-907fd6a825b1,26051,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+28346e70-c18b-4572-922f-c7b7fa8af40d,28533,Stage IB,"Squamous cell carcinoma, large cell, nonkeratinizing, NOS",no,No,No,"Upper lobe, lung",yes
+0425cb44-66af-4e25-afcb-cacccc2f1179,26008,Stage IIIA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+40dc2edc-4bde-441d-8fc5-8ce1bd42f267,21284,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+211bb982-16f4-4f07-b24f-e633703f24c4,29232,Stage IIIA,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+a8764401-d2a5-45dd-941d-2ffb2e7a4664,25658,Stage IB,Basaloid squamous cell carcinoma,no,No,No,"Lower lobe, lung",no
+80b5ef6b-6b2d-4f87-b4a9-5c22f7bfda7c,25665,Stage IIA,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+dff43217-7857-42ca-b87b-058c774a6aa7,23491,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",no
+d1cea7b9-9ba9-4461-ba9e-9b45b6f5af66,21288,Stage IA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",no
+02eb85cc-a597-4eaa-9614-c94c0f035929,23796,Stage IIA,"Squamous cell carcinoma, NOS",no,No,No,"Lower lobe, lung",yes
+7b236171-2e7a-4018-b297-560ea8279ec0,21254,Stage IIA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+6fd72426-f6c8-47ca-a500-d5d3600b9b15,24177,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+ad98977b-e159-410a-b8c2-f4e8a07f9784,20152,Stage IA,"Squamous cell carcinoma, NOS",no,No,Yes,"Upper lobe, lung",yes
+1ccd29c1-cf30-4701-9b50-5d34cae2f4b3,22632,Stage IIIA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+3768cf73-e389-449a-bde3-29eb20c9e249,21989,Stage IB,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+e28cbc9a-aa60-4bfb-8d89-8c33ee97f560,23857,Stage IV,"Squamous cell carcinoma, NOS",no,No,No,"Lung, NOS",yes
+8bb3ed57-6e48-4c90-bcf2-baf9a843398f,26681,Stage IIA,"Squamous cell carcinoma, NOS",no,No,No,"Upper lobe, lung",yes
+ae2c650c-600b-4c58-893b-7fd73d44af47,24178,Stage IIA,"Squamous cell carcinoma, NOS",yes,No,No,"Upper lobe, lung",no
+abc753f0-5ae2-4bec-96b8-6a05d84bf1c1,25258,Stage IIB,"Squamous cell carcinoma, NOS",no,No,No,Overlapping lesion of lung,yes
