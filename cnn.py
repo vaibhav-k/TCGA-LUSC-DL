@@ -6,9 +6,9 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D, Flatten
-from tensorflow.keras.utils import to_categorical
 
 warnings.filterwarnings("ignore")
+np.random.seed(seed=42)
 
 
 # read the datasets
@@ -56,7 +56,9 @@ print(model.summary())
 model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
 
 # train the model
-history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=20)
+history = model.fit(
+    X_train, y_train, epochs=20, batch_size=32, validation_data=(X_test, y_test)
+)
 
 # make the predictions
 y_pred = model.predict(X_test)
@@ -65,6 +67,10 @@ y_pred = np.round_(y_pred)
 # get the metrics
 target_names = ["Dead", "Alive"]
 print(classification_report(y_test, y_pred, target_names=target_names))
+
+# plot the confusion matrix
+conf_mat = confusion_matrix(y_test.to_numpy().argmax(axis=1), y_pred.argmax(axis=1))
+print("The confusion matrix for this model is:\n", conf_mat)
 
 # the metrics measured by the model's training
 print(history.history.keys())
@@ -92,7 +98,3 @@ print("Predicted the first 4 patients in the test set:\n", y_pred[:4])
 
 # actual results for first 4 patients in test set
 print("The actual results for the first 4 patients in test set:\n", y_test[:4])
-
-# plot the confusion matrix
-conf_mat = confusion_matrix(y_test.argmax(axis=1), y_pred.argmax(axis=1))
-print("The confusion matrix for this model is:\n", conf_mat)
