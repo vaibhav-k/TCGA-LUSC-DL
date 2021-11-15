@@ -1,8 +1,6 @@
-import math
 import csv
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from collections import Counter
 
 
 # function to convert age in days to age in years
@@ -21,7 +19,6 @@ def read_tsv(file_read):
 # function to clean-up the DataFrame read
 def clean_df(df):
     # set the column headers
-    cols = df.iloc[0]
     df.columns = df.iloc[0]
     df = df.drop(0)
     # remove the columns with only one value repeated
