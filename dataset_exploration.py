@@ -16,10 +16,20 @@ print(X_train.columns, "\n")
 # check the percentiles of the age at diagnosis
 tmp = X_train.age_at_diagnosis.to_numpy()
 print(
+    "Percentile distribution of the ages of the patients is as follows:\n",
+    "5",
     np.percentile(tmp, 5) / 365,
+    "\n",
+    "25",
     np.percentile(tmp, 25) / 365,
+    "\n",
+    "50",
     np.percentile(tmp, 50) / 365,
+    "\n",
+    "75",
     np.percentile(tmp, 75) / 365,
+    "\n",
+    "95",
     np.percentile(tmp, 95) / 365,
     "\n",
 )
@@ -51,7 +61,7 @@ for i in X_train.ajcc_pathologic_stage:
         tmp.append("Stage IIIA")
     if i == 10:
         tmp.append("Stage IIIB")
-print(dict(Counter(tmp)), "\n")
+print("The pathologic stages:\n", dict(Counter(tmp)), "\n")
 
 # find the number of cases for each primary diagnosis
 tmp = []
@@ -64,7 +74,7 @@ for i in X_train.primary_diagnosis:
         tmp.append("Squamous cell carcinoma, NOS")
     if i == 4:
         tmp.append("Squamous cell carcinoma, keratinizing, NOS")
-print(dict(Counter(tmp)), "\n")
+print("The primary diagnosis:\n", dict(Counter(tmp)), "\n")
 
 # find the number of cases for each prior malignancy
 tmp = []
@@ -73,7 +83,7 @@ for i in X_train.prior_malignancy:
         tmp.append("No")
     if i == 2:
         tmp.append("Yes")
-print(dict(Counter(tmp)), "\n")
+print("The prior malignancies are:\n", dict(Counter(tmp)), "\n")
 
 # find the number of cases for each prior treatment
 tmp = []
@@ -82,7 +92,7 @@ for i in X_train.prior_treatment:
         tmp.append("No")
     if i == 2:
         tmp.append("Yes")
-print(dict(Counter(tmp)), "\n")
+print("The prior treatment:\n", dict(Counter(tmp)), "\n")
 
 # find the number of cases for each treatment or therapy
 tmp = []
@@ -91,7 +101,7 @@ for i in X_train.treatment_or_therapy:
         tmp.append("No")
     if i == 2:
         tmp.append("Yes")
-print(dict(Counter(tmp)), "\n")
+print("The treatment or therapy:\n", dict(Counter(tmp)), "\n")
 
 # find the number of cases for each tissue or organ of origin
 tmp = []
@@ -108,7 +118,7 @@ for i in X_train.tissue_or_organ_of_origin:
         tmp.append("Overlapping lesion of lung")
     if i == 4:
         tmp.append("Upper lobe, lung")
-print(dict(Counter(tmp)), "\n")
+print("The tissue or organ of origin:\n", dict(Counter(tmp)), "\n")
 
 # find the number of cases for each synchronous malignancy
 tmp = []
@@ -117,4 +127,4 @@ for i in X_train.synchronous_malignancy:
         tmp.append("No")
     if i == 2:
         tmp.append("Yes")
-print(dict(Counter(tmp)), "\n")
+print("The synchronous malignancies are:\n", dict(Counter(tmp)), "\n")
