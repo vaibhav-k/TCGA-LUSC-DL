@@ -128,3 +128,12 @@ for i in X_train.synchronous_malignancy:
     if i == 2:
         tmp.append("Yes")
 print("The synchronous malignancies are:\n", dict(Counter(tmp)), "\n")
+
+print(
+    "There are",
+    len(X_train),
+    "patients' clinical data available for training the model.",
+    "\nThere are",
+    len(X_test),
+    "patients' clinical data available for testing the model.",
+)
