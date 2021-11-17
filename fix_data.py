@@ -1,5 +1,6 @@
 import pandas as pd
 from tensorflow.keras.utils import to_categorical
+from sklearn.preprocessing import OrdinalEncoder
 
 # read the datasets
 X_train = pd.read_csv("./X_train.csv")
@@ -45,16 +46,29 @@ X_test["synchronous_malignancy"] = (
     pd.factorize(X_test["synchronous_malignancy"], sort=True)[0] + 1
 )
 
-# take only the relevant column from the target variabel DataFrame
-# convert it to a numerical value
+# ordinal encoding
+tmp = y_train.vital_status.to_numpy().reshape(-1, 1)
+encoder = OrdinalEncoder()
+y_train_ordinal = encoder.fit_transform(tmp)
+y_train_ordinal = pd.DataFrame(y_train_ordinal)
+tmp = y_test.vital_status.to_numpy().reshape(-1, 1)
+encoder = OrdinalEncoder()
+y_test_ordinal = encoder.fit_transform(tmp)
+y_test_ordinal = pd.DataFrame(y_test_ordinal)
+y_train_ordinal = [
+    1 if i == 0.0 else 0 for i in sum(y_train_ordinal.values.tolist(), [])
+]
+y_test_ordinal = [1 if i == 0.0 else 0 for i in sum(y_test_ordinal.values.tolist(), [])]
+y_train_ordinal = pd.DataFrame(y_train_ordinal)
+y_test_ordinal = pd.DataFrame(y_test_ordinal)
+y_train_ordinal.to_csv("y_train_ordinal.csv", index=False)
+y_test_ordinal.to_csv("y_test_ordinal.csv", index=False)
+
+# one-hot encoding
 y_train = [1 if i == "Alive" else 0 for i in y_train.vital_status]
 y_test = [1 if i == "Alive" else 0 for i in y_test.vital_status]
-
-# one-hot encode the target column
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
-
-# convert the NumPy arrays to a DataFrame
 y_train = pd.DataFrame(y_train)
 y_test = pd.DataFrame(y_test)
 
@@ -63,3 +77,7 @@ X_train.to_csv("X_train_clean.csv", index=False)
 X_test.to_csv("X_test_clean.csv", index=False)
 y_train.to_csv("y_train_clean.csv", index=False)
 y_test.to_csv("y_test_clean.csv", index=False)
+
+# getting the str labels back
+# y_train.columns = ["Dead", "Alive"]
+# y_train = y_train.idxmax(axis=1)
