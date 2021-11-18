@@ -2,12 +2,13 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Conv2D, Flatten, LeakyReLU
+from tensorflow.keras.layers import Dense, LeakyReLU, LSTM
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedKFold
+from tensorflow.keras.utils import to_categorical
 
 
 def read_prepare_data():
@@ -19,34 +20,18 @@ def read_prepare_data():
 
     # reshape the datasets for CNN
     X_train.drop("case_id", inplace=True, axis=1)
-    tmp = np.array(X_train)
-    tmp = tmp.reshape(-1, 2, 4)
-    X_train = pd.DataFrame(sum(map(list, tmp), []))
-    tmp = []
-    for i, g in X_train.groupby(np.arange(len(X_train)) // 2):
-        tmp.append(g)
-    tmp = np.array([i.to_numpy() for i in tmp])
-    # the number of images, shape of the image, and the number of channels
-    X_train = tmp.reshape(402, 2, 4, 1)
-    X_test.drop("case_id", inplace=True, axis=1)
-    tmp = np.array(X_test)
-    tmp = tmp.reshape(-1, 2, 4)
-    X_test = pd.DataFrame(sum(map(list, tmp), []))
-    tmp = []
-    for i, g in X_test.groupby(np.arange(len(X_test)) // 2):
-        tmp.append(g)
-    tmp = np.array([i.to_numpy() for i in tmp])
-    # the number of images, shape of the image, and the number of channels
-    X_test = tmp.reshape(101, 2, 4, 1)
-
-    # normalize the test and train data
+    X_train = X_train.to_numpy()
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train.reshape(-1, X_train.shape[-1])).reshape(
         X_train.shape
     )
+    X_train = X_train.reshape(X_train.shape[0], X_train.shape[1] // 2, 2)
+    X_test.drop("case_id", inplace=True, axis=1)
+    X_test = X_test.to_numpy()
     X_test = scaler.transform(X_test.reshape(-1, X_test.shape[-1])).reshape(
         X_test.shape
     )
+    X_test = X_test.reshape(X_test.shape[0], X_test.shape[1] // 2, 2)
 
     # encode class values as integers
     encoder = LabelEncoder()
@@ -71,11 +56,12 @@ def train_model():
     for train, test in kfold.split(X_train, y_train_encoded):
         # Define the model architecture
         model = Sequential()
-        model.add(Conv2D(1, kernel_size=2,
-                  activation="relu", input_shape=(2, 4, 1)))
-        model.add(Flatten())
-        model.add(Dense(1, input_shape=(2, 4, 1)))
-        model.add(LeakyReLU(alpha=0.05))
+        model.add(LSTM(1, input_shape=(
+            X_train.shape[1], 2), return_sequences=True))
+        model.add(LeakyReLU(alpha=0.6))
+        model.add(LSTM(1))
+        model.add(LeakyReLU(alpha=0.6))
+        model.add(Dense(1, activation="softmax"))
 
         # compile the model
         model.compile(
@@ -94,13 +80,16 @@ def train_model():
         )
 
         # Generate generalization metrics
-        scores = model.evaluate(
-            X_train[test], y_train_encoded[test], verbose=0)
-        print(
-            f"Score for fold {fold_no}: {model.metrics_names[0]} of {scores[0]}; {model.metrics_names[1]} of {scores[1]*100}%"
-        )
-        acc_per_fold.append(scores[1] * 100)
-        loss_per_fold.append(scores[0])
+        try:
+            scores = model.evaluate(
+                X_train[test], y_train_encoded[test], verbose=0)
+            print(
+                f"Score for fold {fold_no}: {model.metrics_names[0]} of {scores[0]}; {model.metrics_names[1]} of {scores[1]*100}%"
+            )
+            acc_per_fold.append(scores[1] * 100)
+            loss_per_fold.append(scores[0])
+        except IndexError:
+            pass
 
         # Increase fold number
         fold_no += 1

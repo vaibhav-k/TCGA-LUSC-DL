@@ -5,7 +5,7 @@ import warnings
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, LSTM
+from tensorflow.keras.layers import Dense, LeakyReLU, LSTM
 from tensorflow.keras.utils import to_categorical
 
 warnings.filterwarnings("ignore")
@@ -55,7 +55,7 @@ X_test["synchronous_malignancy"] = (
     pd.factorize(X_test["synchronous_malignancy"], sort=True)[0] + 1
 )
 
-# # manipulate the data to feed into an LSTM
+# manipulate the data to feed into an LSTM
 X_train.drop("case_id", inplace=True, axis=1)
 X_test.drop("case_id", inplace=True, axis=1)
 X_train = X_train.to_numpy()
@@ -76,9 +76,12 @@ y_test = to_categorical(y_test)
 model = Sequential()
 
 # add model layers
-model.add(LSTM(64, activation="relu", input_shape=(X_train.shape[1], 2)))
+model.add(LSTM(32, input_shape=(X_train.shape[1], 2), return_sequences=True))
+model.add(LeakyReLU(alpha=0.05))
+model.add(LSTM(64))
+model.add(LeakyReLU(alpha=0.05))
 model.add(Dense(2, activation="softmax"))
-print(model.summary())
+print((X_train.shape[1], 2), model.summary())
 
 # compile model using accuracy to measure model performance
 model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
