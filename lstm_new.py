@@ -57,10 +57,10 @@ def train_model():
         # Define the model architecture
         model = Sequential()
         model.add(LSTM(1, input_shape=(
-            X_train.shape[1], 2), return_sequences=True))
-        model.add(LeakyReLU(alpha=0.6))
+            X_train.shape[1], 2), dropout=0.4, return_sequences=True))
+        model.add(LeakyReLU(alpha=0.2))
         model.add(LSTM(1))
-        model.add(LeakyReLU(alpha=0.6))
+        model.add(LeakyReLU(alpha=0.2))
         model.add(Dense(1, activation="softmax"))
 
         # compile the model

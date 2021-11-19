@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Conv2D, Flatten, LeakyReLU
+from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, LeakyReLU
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import LabelEncoder, StandardScaler
@@ -74,6 +74,7 @@ def train_model():
         model.add(Conv2D(1, kernel_size=2,
                   activation="relu", input_shape=(2, 4, 1)))
         model.add(Flatten())
+        model.add(Dropout(0.2))
         model.add(Dense(1, input_shape=(2, 4, 1)))
         model.add(LeakyReLU(alpha=0.05))
 
