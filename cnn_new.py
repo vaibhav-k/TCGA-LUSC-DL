@@ -6,13 +6,9 @@ from matplotlib.image import imread
 from PIL import Image
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, LeakyReLU
-from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedKFold
 from tensorflow.keras.applications.vgg16 import VGG16
-from tensorflow.keras.applications.vgg16 import preprocess_input
 
 
 def read_prepare_data():
@@ -181,7 +177,6 @@ def train_transfer_model(X_train):
             weights="imagenet", include_top=False, input_shape=(32, 64, 3)
         )
         base_model.trainable = False  # not trainable weights
-        dense_layer = Dense(1, activation="softmax")
         # defining the model architecture
         model = Sequential()
         model.add(base_model)

@@ -1,14 +1,9 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, LeakyReLU, LSTM
-from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedKFold
-from tensorflow.keras.utils import to_categorical
 
 
 def read_prepare_data():
