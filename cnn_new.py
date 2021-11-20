@@ -128,12 +128,12 @@ def train_vanilla_model(X_train):
         )
         print(f"Training for fold {fold_no} ...")
 
-        # Fit data to model
+        # fit data to model
         history = model.fit(
             X_train[train], y_train_encoded[train], batch_size=32, epochs=20, verbose=1,
         )
 
-        # Generate generalization metrics
+        # generate generalization metrics
         scores = model.evaluate(
             X_train[test], y_train_encoded[test], verbose=0)
         print(
@@ -142,7 +142,7 @@ def train_vanilla_model(X_train):
         acc_per_fold.append(scores[1] * 100)
         loss_per_fold.append(scores[0])
 
-        # Increase fold number
+        # increase fold number
         fold_no += 1
 
     # provide the average scores
