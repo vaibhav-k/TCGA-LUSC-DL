@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, LeakyReLU
+from tensorflow.keras.layers import BatchNormalization, Dense, LeakyReLU
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import KFold
 from tensorflow.keras.utils import to_categorical
@@ -84,10 +84,13 @@ def train_kfold_model(X_train, X_test, y_train, y_test, input_shape):
         model = Sequential()
         model.add(Dense(10, input_shape=input_shape))
         model.add(LeakyReLU(alpha=0.05))
+        model.add(BatchNormalization())
         model.add(Dense(5))
         model.add(LeakyReLU(alpha=0.05))
+        model.add(BatchNormalization())
         model.add(Dense(num_classes))
         model.add(LeakyReLU(alpha=0.05))
+        model.add(BatchNormalization())
 
         # compile the model
         model.compile(

@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, LeakyReLU, LSTM
+from tensorflow.keras.layers import BatchNormalization, Dense, LeakyReLU, LSTM
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import StratifiedKFold
 
@@ -57,8 +57,10 @@ def train_model():
             )
         )
         model.add(LeakyReLU(alpha=0.2))
+        model.add(BatchNormalization())
         model.add(LSTM(1))
         model.add(LeakyReLU(alpha=0.2))
+        model.add(BatchNormalization())
         model.add(Dense(1, activation="softmax"))
 
         # compile the model

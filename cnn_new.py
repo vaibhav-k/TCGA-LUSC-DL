@@ -5,7 +5,14 @@ import matplotlib.pyplot as plt
 from matplotlib.image import imread
 from PIL import Image
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, LeakyReLU
+from tensorflow.keras.layers import (
+    BatchNormalization,
+    Dense,
+    Conv2D,
+    Dropout,
+    Flatten,
+    LeakyReLU,
+)
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import StratifiedKFold
 from tensorflow.keras.applications.vgg16 import VGG16
@@ -112,10 +119,12 @@ def train_vanilla_model(X_train):
         model = Sequential()
         model.add(Conv2D(1, kernel_size=2,
                   activation="relu", input_shape=(2, 4, 1)))
+        model.add(BatchNormalization())
         model.add(Flatten())
         model.add(Dropout(0.2))
         model.add(Dense(1, input_shape=(2, 4, 1)))
         model.add(LeakyReLU(alpha=0.05))
+        model.add(BatchNormalization())
 
         # compile the model
         model.compile(
@@ -198,7 +207,7 @@ def train_transfer_model(X_train):
 
         # Fit data to model
         history = model.fit(
-            X_train[train], y_train_encoded[train], batch_size=32, epochs=20, verbose=1,
+            X_train[train], y_train_encoded[train], batch_size=32, epochs=50, verbose=1,
         )
 
         # Generate generalization metrics
@@ -241,7 +250,7 @@ X_train_rgb_resized, X_test_rgb_resized = read_resized_images()
 # resize_images()
 
 # evaluate the model using the vanilla CNN model
-train_vanilla_model(X_train)
+# train_vanilla_model(X_train)
 
 # evaluate the model using transfer learning
 train_transfer_model(X_train_rgb_resized)
