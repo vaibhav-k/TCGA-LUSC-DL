@@ -1,6 +1,9 @@
+import glob
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.image import imread
+from PIL import Image
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D, Dropout, Flatten, LeakyReLU
 from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
@@ -8,6 +11,8 @@ from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedKFold
+from tensorflow.keras.applications.vgg16 import VGG16
+from tensorflow.keras.applications.vgg16 import preprocess_input
 
 
 def read_prepare_data():
@@ -58,7 +63,46 @@ def read_prepare_data():
     return X_train, X_test, y_train_encoded, y_test_encoded
 
 
-def train_model():
+def grayscale_color(X_train, X_test):
+    X_train_rgb = []
+    for i in X_train:
+        X_train_rgb.append(np.stack((i, i, i), axis=2))
+    X_test_rgb = []
+    for i in X_test:
+        X_test_rgb.append(np.stack((i, i, i), axis=2))
+    return np.array(X_train_rgb), np.array(X_test_rgb)
+
+
+def save_data_images(X_train_rgb, X_test_rgb):
+    for ind, i in enumerate(X_train_rgb):
+        plt.imsave("Train and test data/X_train_rgb_" + str(ind) + ".jpeg", i)
+    for ind, i in enumerate(X_test_rgb):
+        plt.imsave("Train and test data/X_test_rgb_" + str(ind) + ".jpeg", i)
+
+
+def resize_images():
+    imgs = glob.glob("**/*.*")
+    for i in imgs:
+        baseheight = 32
+        img = Image.open(i)
+        hpercent = baseheight / float(img.size[1])
+        wsize = int((float(img.size[0]) * float(hpercent)))
+        img = img.resize((wsize, baseheight), Image.ANTIALIAS)
+        img.save("Train and test data resized/" + i[20:])
+
+
+def read_resized_images():
+    X_train_rgb_resized = []
+    X_test_rgb_resized = []
+    for f in glob.glob("Train and test data resized/*.jpeg"):
+        if "train" in f:
+            X_train_rgb_resized.append(imread(f))
+        elif "test" in f:
+            X_test_rgb_resized.append(imread(f))
+    return np.array(X_train_rgb_resized), np.array(X_test_rgb_resized)
+
+
+def train_vanilla_model(X_train):
     # define per-fold score containers
     acc_per_fold = []
     loss_per_fold = []
@@ -69,7 +113,6 @@ def train_model():
     # K-fold Cross Validation model evaluation
     fold_no = 1
     for train, test in kfold.split(X_train, y_train_encoded):
-        # Define the model architecture
         model = Sequential()
         model.add(Conv2D(1, kernel_size=2,
                   activation="relu", input_shape=(2, 4, 1)))
@@ -122,8 +165,88 @@ def train_model():
     print("------------------------------------------------------------------------")
 
 
+def train_transfer_model(X_train):
+    # define per-fold score containers
+    acc_per_fold = []
+    loss_per_fold = []
+
+    # define the K-fold Cross Validator
+    kfold = StratifiedKFold(n_splits=5, shuffle=True)
+
+    # K-fold Cross Validation model evaluation
+    fold_no = 1
+    for train, test in kfold.split(X_train, y_train_encoded):
+        # loading the VGG16 model
+        base_model = VGG16(
+            weights="imagenet", include_top=False, input_shape=(32, 64, 3)
+        )
+        base_model.trainable = False  # not trainable weights
+        dense_layer = Dense(1, activation="softmax")
+        # defining the model architecture
+        model = Sequential()
+        model.add(base_model)
+        model.add(Flatten())
+        model.add(Dropout(0.2))
+        model.add(Dense(1))
+        model.add(LeakyReLU(alpha=0.05))
+
+        # compile the model
+        model.compile(
+            loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"]
+        )
+
+        # generate a print
+        print(
+            "------------------------------------------------------------------------"
+        )
+        print(f"Training for fold {fold_no} ...")
+
+        # Fit data to model
+        history = model.fit(
+            X_train[train], y_train_encoded[train], batch_size=32, epochs=20, verbose=1,
+        )
+
+        # Generate generalization metrics
+        scores = model.evaluate(
+            X_train[test], y_train_encoded[test], verbose=0)
+        print(
+            f"Score for fold {fold_no}: {model.metrics_names[0]} of {scores[0]}; {model.metrics_names[1]} of {scores[1]*100}%"
+        )
+        acc_per_fold.append(scores[1] * 100)
+        loss_per_fold.append(scores[0])
+
+        # Increase fold number
+        fold_no += 1
+
+    # provide the average scores
+    print("\n------------------------------------------------------------------------")
+    print("Score per fold")
+    for i in range(0, len(acc_per_fold)):
+        print(
+            "------------------------------------------------------------------------"
+        )
+        print(
+            f"> Fold {i+1} - Loss: {loss_per_fold[i]} - Accuracy: {acc_per_fold[i]}%")
+    print("------------------------------------------------------------------------")
+    print("Average scores for all folds:")
+    print(f"> Accuracy: {np.mean(acc_per_fold)} (+- {np.std(acc_per_fold)})")
+    print(f"> Loss: {np.mean(loss_per_fold)}")
+    print("------------------------------------------------------------------------")
+
+
 # read the datasets
 X_train, X_test, y_train_encoded, y_test_encoded = read_prepare_data()
+X_train_rgb_resized, X_test_rgb_resized = read_resized_images()
 
-# evaluate the model with standardized dataset
-train_model()
+# convert the grayscale images to RGB for transfer learning
+# X_train_rgb, X_test_rgb = grayscale_color(X_train, X_test)
+
+# resize and save the images
+# save_data_images(X_train_rgb, X_test_rgb)
+# resize_images()
+
+# evaluate the model using the vanilla CNN model
+train_vanilla_model(X_train)
+
+# evaluate the model using transfer learning
+train_transfer_model(X_train_rgb_resized)
