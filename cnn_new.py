@@ -13,6 +13,7 @@ from tensorflow.keras.layers import (
     Flatten,
     LeakyReLU,
 )
+from tensorflow.keras.callbacks import TensorBoard
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import StratifiedKFold
 from tensorflow.keras.applications.vgg16 import VGG16
@@ -105,7 +106,7 @@ def read_resized_images():
     return np.array(X_train_rgb_resized), np.array(X_test_rgb_resized)
 
 
-def train_vanilla_model(X_train):
+def train_vanilla_model(X, y):
     # define per-fold score containers
     acc_per_fold = []
     loss_per_fold = []
@@ -115,7 +116,7 @@ def train_vanilla_model(X_train):
 
     # K-fold Cross Validation model evaluation
     fold_no = 1
-    for train, test in kfold.split(X_train, y_train_encoded):
+    for train, test in kfold.split(X, y):
         model = Sequential()
         model.add(Conv2D(1, kernel_size=2,
                   activation="relu", input_shape=(2, 4, 1)))
@@ -131,6 +132,12 @@ def train_vanilla_model(X_train):
             loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"]
         )
 
+        # Define Tensorboard as a Keras callback
+        tensorboard = TensorBoard(
+            log_dir="logs/fit/cnn-vanilla/", histogram_freq=1, write_images=True
+        )
+        keras_callbacks = [tensorboard]
+
         # generate a print
         print(
             "------------------------------------------------------------------------"
@@ -139,12 +146,16 @@ def train_vanilla_model(X_train):
 
         # fit data to model
         history = model.fit(
-            X_train[train], y_train_encoded[train], batch_size=32, epochs=20, verbose=1,
+            X[train],
+            y[train],
+            batch_size=32,
+            epochs=20,
+            verbose=1,
+            callbacks=keras_callbacks,
         )
 
         # generate generalization metrics
-        scores = model.evaluate(
-            X_train[test], y_train_encoded[test], verbose=0)
+        scores = model.evaluate(X[test], y[test], verbose=0)
         print(
             f"Score for fold {fold_no}: {model.metrics_names[0]} of {scores[0]}; {model.metrics_names[1]} of {scores[1]*100}%"
         )
@@ -170,7 +181,7 @@ def train_vanilla_model(X_train):
     print("------------------------------------------------------------------------")
 
 
-def train_transfer_model(X_train):
+def train_transfer_model(X, y):
     # define per-fold score containers
     acc_per_fold = []
     loss_per_fold = []
@@ -180,7 +191,7 @@ def train_transfer_model(X_train):
 
     # K-fold Cross Validation model evaluation
     fold_no = 1
-    for train, test in kfold.split(X_train, y_train_encoded):
+    for train, test in kfold.split(X, y):
         # loading the VGG16 model
         base_model = VGG16(
             weights="imagenet", include_top=False, input_shape=(32, 64, 3)
@@ -199,6 +210,12 @@ def train_transfer_model(X_train):
             loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"]
         )
 
+        # Define Tensorboard as a Keras callback
+        tensorboard = TensorBoard(
+            log_dir="logs/fit/cnn-transfer/", histogram_freq=1, write_images=True
+        )
+        keras_callbacks = [tensorboard]
+
         # generate a print
         print(
             "------------------------------------------------------------------------"
@@ -207,12 +224,16 @@ def train_transfer_model(X_train):
 
         # Fit data to model
         history = model.fit(
-            X_train[train], y_train_encoded[train], batch_size=32, epochs=50, verbose=1,
+            X[train],
+            y[train],
+            batch_size=32,
+            epochs=20,
+            verbose=1,
+            callbacks=keras_callbacks,
         )
 
         # Generate generalization metrics
-        scores = model.evaluate(
-            X_train[test], y_train_encoded[test], verbose=0)
+        scores = model.evaluate(X[test], y[test], verbose=0)
         print(
             f"Score for fold {fold_no}: {model.metrics_names[0]} of {scores[0]}; {model.metrics_names[1]} of {scores[1]*100}%"
         )
@@ -242,6 +263,11 @@ def train_transfer_model(X_train):
 X_train, X_test, y_train_encoded, y_test_encoded = read_prepare_data()
 X_train_rgb_resized, X_test_rgb_resized = read_resized_images()
 
+# join the training and testing data for cross validation
+X =  np.vstack((X_train, X_test))
+X_rgb_resized = np.vstack((X_train_rgb_resized, X_test_rgb_resized))
+y = np.append(y_train_encoded, y_test_encoded)
+
 # convert the grayscale images to RGB for transfer learning
 # X_train_rgb, X_test_rgb = grayscale_color(X_train, X_test)
 
@@ -250,7 +276,7 @@ X_train_rgb_resized, X_test_rgb_resized = read_resized_images()
 # resize_images()
 
 # evaluate the model using the vanilla CNN model
-# train_vanilla_model(X_train)
+# train_vanilla_model(X, y)
 
 # evaluate the model using transfer learning
-train_transfer_model(X_train_rgb_resized)
+train_transfer_model(X_rgb_resized, y)

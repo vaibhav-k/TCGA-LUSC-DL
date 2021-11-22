@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import BatchNormalization, Dense, LeakyReLU
+from tensorflow.keras.callbacks import TensorBoard
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import KFold
 from tensorflow.keras.utils import to_categorical
@@ -97,6 +98,12 @@ def train_kfold_model(X_train, X_test, y_train, y_test, input_shape):
             loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"]
         )
 
+        # Define Tensorboard as a Keras callback
+        tensorboard = TensorBoard(
+            log_dir="logs/fit/mlp/", histogram_freq=1, write_images=True
+        )
+        keras_callbacks = [tensorboard]
+
         # generate a print
         print(
             "------------------------------------------------------------------------"
@@ -104,8 +111,14 @@ def train_kfold_model(X_train, X_test, y_train, y_test, input_shape):
         print(f"Training for fold {fold_no} ...")
 
         # fit the data to model
-        history = model.fit(X_train, y_train, batch_size=32,
-                            epochs=20, verbose=1,)
+        history = model.fit(
+            X_train,
+            y_train,
+            batch_size=32,
+            epochs=30,
+            verbose=1,
+            callbacks=keras_callbacks,
+        )
 
         # generate generalization metrics
         scores = model.evaluate(X_test, y_test, verbose=0)

@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import BatchNormalization, Dense, LeakyReLU, LSTM
+from tensorflow.keras.callbacks import TensorBoard
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import StratifiedKFold
 
@@ -38,7 +39,7 @@ def read_prepare_data():
     return X_train, X_test, y_train_encoded, y_test_encoded
 
 
-def train_model():
+def train_model(X, y):
     # define per-fold score containers
     acc_per_fold = []
     loss_per_fold = []
@@ -48,13 +49,12 @@ def train_model():
 
     # K-fold Cross Validation model evaluation
     fold_no = 1
-    for train, test in kfold.split(X_train, y_train_encoded):
+    for train, test in kfold.split(X, y):
         # Define the model architecture
         model = Sequential()
         model.add(
-            LSTM(
-                1, input_shape=(X_train.shape[1], 2), dropout=0.4, return_sequences=True
-            )
+            LSTM(1, input_shape=(X.shape[1], 2),
+                 dropout=0.4, return_sequences=True)
         )
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization())
@@ -68,6 +68,12 @@ def train_model():
             loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"]
         )
 
+        # Define Tensorboard as a Keras callback
+        tensorboard = TensorBoard(
+            log_dir="logs/fit/lstm/", histogram_freq=1, write_images=True
+        )
+        keras_callbacks = [tensorboard]
+
         # generate a print
         print(
             "------------------------------------------------------------------------"
@@ -76,13 +82,17 @@ def train_model():
 
         # Fit data to model
         history = model.fit(
-            X_train[train], y_train_encoded[train], batch_size=32, epochs=20, verbose=1,
+            X[train],
+            y[train],
+            batch_size=32,
+            epochs=15,
+            verbose=1,
+            callbacks=keras_callbacks,
         )
 
         # Generate generalization metrics
         try:
-            scores = model.evaluate(
-                X_train[test], y_train_encoded[test], verbose=0)
+            scores = model.evaluate(X[test], y[test], verbose=0)
             print(
                 f"Score for fold {fold_no}: {model.metrics_names[0]} of {scores[0]}; {model.metrics_names[1]} of {scores[1]*100}%"
             )
@@ -113,5 +123,9 @@ def train_model():
 # read the datasets
 X_train, X_test, y_train_encoded, y_test_encoded = read_prepare_data()
 
+# join the training and testing data for cross validation
+X = np.vstack((X_train, X_test))
+y = np.append(y_train_encoded, y_test_encoded)
+
 # evaluate the model with standardized dataset
-train_model()
+train_model(X, y)
