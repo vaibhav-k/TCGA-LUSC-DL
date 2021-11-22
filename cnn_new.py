@@ -65,6 +65,7 @@ def read_prepare_data():
     encoder = LabelEncoder()
     encoder.fit(y_test.vital_status)
     y_test_encoded = encoder.transform(y_test.vital_status)
+
     return X_train, X_test, y_train_encoded, y_test_encoded
 
 
@@ -269,7 +270,7 @@ X_train, X_test, y_train_encoded, y_test_encoded = read_prepare_data()
 X_train_rgb_resized, X_test_rgb_resized = read_resized_images()
 
 # join the training and testing data for cross validation
-X =  np.vstack((X_train, X_test))
+X = np.vstack((X_train, X_test))
 X_rgb_resized = np.vstack((X_train_rgb_resized, X_test_rgb_resized))
 y = np.append(y_train_encoded, y_test_encoded)
 
