@@ -1,8 +1,9 @@
 import pandas as pd
 import numpy as np
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import BatchNormalization, Dense, LeakyReLU, LSTM
 from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.layers import BatchNormalization, Dense, LeakyReLU, LSTM
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.utils import plot_model
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import StratifiedKFold
 
@@ -118,6 +119,8 @@ def train_model(X, y):
     print(f"> Accuracy: {np.mean(acc_per_fold)} (+- {np.std(acc_per_fold)})")
     print(f"> Loss: {np.mean(loss_per_fold)}")
     print("------------------------------------------------------------------------")
+
+    plot_model(model, to_file="lstm-kfold.png", show_shapes=True)
 
 
 # read the datasets

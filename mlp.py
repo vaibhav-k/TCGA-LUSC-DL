@@ -3,6 +3,7 @@ import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import BatchNormalization, Dense, LeakyReLU
 from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.utils import plot_model
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import KFold
 from tensorflow.keras.utils import to_categorical
@@ -145,6 +146,8 @@ def train_kfold_model(X_train, X_test, y_train, y_test, input_shape):
     print(f"> Accuracy: {np.mean(acc_per_fold)} (+- {np.std(acc_per_fold)})")
     print(f"> Loss: {np.mean(loss_per_fold)}")
     print("------------------------------------------------------------------------")
+
+    plot_model(model, to_file="mlp-kfold.png", show_shapes=True)
 
 
 def train_evaluate_model(X_train, X_test, y_train, y_test, input_shape):

@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.image import imread
 from PIL import Image
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras.layers import (
     BatchNormalization,
     Dense,
@@ -13,7 +13,8 @@ from tensorflow.keras.layers import (
     Flatten,
     LeakyReLU,
 )
-from tensorflow.keras.callbacks import TensorBoard
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.utils import plot_model
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import StratifiedKFold
 from tensorflow.keras.applications.vgg16 import VGG16
@@ -180,6 +181,8 @@ def train_vanilla_model(X, y):
     print(f"> Loss: {np.mean(loss_per_fold)}")
     print("------------------------------------------------------------------------")
 
+    plot_model(model, to_file="cnn-vanilla-kfold.png", show_shapes=True)
+
 
 def train_transfer_model(X, y):
     # define per-fold score containers
@@ -257,6 +260,8 @@ def train_transfer_model(X, y):
     print(f"> Accuracy: {np.mean(acc_per_fold)} (+- {np.std(acc_per_fold)})")
     print(f"> Loss: {np.mean(loss_per_fold)}")
     print("------------------------------------------------------------------------")
+
+    plot_model(model, to_file="cnn-transfer-kfold.png", show_shapes=True)
 
 
 # read the datasets
