@@ -1,7 +1,13 @@
 import pandas as pd
 import numpy as np
 from tensorflow.keras.callbacks import TensorBoard
-from tensorflow.keras.layers import BatchNormalization, Dense, LeakyReLU, LSTM
+from tensorflow.keras.layers import (
+    BatchNormalization,
+    Dense,
+    LeakyReLU,
+    LSTM,
+    TimeDistributed,
+)
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import plot_model
 from sklearn.preprocessing import LabelEncoder, StandardScaler
@@ -51,7 +57,7 @@ def train_model(X, y):
     # K-fold Cross Validation model evaluation
     fold_no = 1
     for train, test in kfold.split(X, y):
-        # Define the model architecture
+        # define the model architecture
         model = Sequential()
         model.add(
             LSTM(1, input_shape=(X.shape[1], 2),
@@ -69,7 +75,7 @@ def train_model(X, y):
             loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"]
         )
 
-        # Define Tensorboard as a Keras callback
+        # define Tensorboard as a Keras callback
         tensorboard = TensorBoard(
             log_dir="logs/fit/lstm/", histogram_freq=1, write_images=True
         )
@@ -86,12 +92,12 @@ def train_model(X, y):
             X[train],
             y[train],
             batch_size=32,
-            epochs=15,
+            epochs=10,
             verbose=1,
             callbacks=keras_callbacks,
         )
 
-        # Generate generalization metrics
+        # generate generalization metrics
         try:
             scores = model.evaluate(X[test], y[test], verbose=0)
             print(
@@ -102,7 +108,7 @@ def train_model(X, y):
         except IndexError:
             pass
 
-        # Increase fold number
+        # increase fold number
         fold_no += 1
 
     # provide the average scores
@@ -116,11 +122,46 @@ def train_model(X, y):
             f"> Fold {i+1} - Loss: {loss_per_fold[i]} - Accuracy: {acc_per_fold[i]}%")
     print("------------------------------------------------------------------------")
     print("Average scores for all folds:")
-    print(f"> Accuracy: {np.mean(acc_per_fold)} (+- {np.std(acc_per_fold)})")
+    print(f"> Accuracy: {np.mean(acc_per_fold)}% (+- {np.std(acc_per_fold)}%)")
     print(f"> Loss: {np.mean(loss_per_fold)}")
     print("------------------------------------------------------------------------")
 
     plot_model(model, to_file="lstm-kfold.png", show_shapes=True)
+
+
+def train_time_distributed(X, y):
+    X = np.array([i.flatten().reshape(
+        1, X[0].shape[0] * X[0].shape[1], 1) for i in X])
+    X = X.reshape(1, len(X) * X.shape[2], 1)
+    y = y.reshape(1, y.shape[0], 1)
+    y = np.resize(y, (1, X.shape[1], 1))
+
+    # define the model architecture
+    model = Sequential()
+    model.add(LSTM(8, input_shape=(
+        X.shape[1], 1), dropout=0.4, return_sequences=True))
+    model.add(TimeDistributed(Dense(1, activation="softmax")))
+
+    # compile the model
+    model.compile(loss="binary_crossentropy",
+                  optimizer="adam", metrics=["accuracy"])
+
+    # define Tensorboard as a Keras callback
+    tensorboard = TensorBoard(
+        log_dir="logs/fit/lstm-time-distributed/", histogram_freq=1, write_images=True
+    )
+    keras_callbacks = [tensorboard]
+
+    # fit data to model
+    history = model.fit(
+        X, y, batch_size=32, epochs=10, verbose=1, callbacks=keras_callbacks,
+    )
+
+    # generate generalization metrics
+    scores = model.evaluate(X, y, verbose=0)
+    print(
+        f"The {model.metrics_names[0]} is {scores[0]}.\nThe {model.metrics_names[1]} is {scores[1] * 100}%"
+    )
 
 
 # read the datasets
@@ -132,3 +173,4 @@ y = np.append(y_train_encoded, y_test_encoded)
 
 # evaluate the model with standardized dataset
 train_model(X, y)
+train_time_distributed(X, y)

@@ -134,7 +134,7 @@ def train_vanilla_model(X, y):
             loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"]
         )
 
-        # Define Tensorboard as a Keras callback
+        # define Tensorboard as a Keras callback
         tensorboard = TensorBoard(
             log_dir="logs/fit/cnn-vanilla/", histogram_freq=1, write_images=True
         )
