@@ -1,4 +1,5 @@
 import pandas as pd
+import math
 import numpy as np
 from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras.layers import BatchNormalization, Dense, LeakyReLU
@@ -15,6 +16,7 @@ def read_prepare_data(feature_vector_length):
     X_test = pd.read_csv("./X_test_clean.csv")
     y_train = pd.read_csv("./y_train.csv")
     y_test = pd.read_csv("./y_test.csv")
+    print(X_train.columns)
 
     # reshape the datasets for CNN
     X_train.drop("case_id", inplace=True, axis=1)
@@ -38,14 +40,14 @@ def read_prepare_data(feature_vector_length):
     # the number of images, shape of the image, and the number of channels
     X_test = tmp.reshape(101, 2, 4, 1)
 
-    # normalize the test and train data
-    scaler = StandardScaler()
-    X_train = scaler.fit_transform(X_train.reshape(-1, X_train.shape[-1])).reshape(
-        X_train.shape
-    )
-    X_test = scaler.transform(X_test.reshape(-1, X_test.shape[-1])).reshape(
-        X_test.shape
-    )
+    # # normalize the test and train data
+    # scaler = StandardScaler()
+    # X_train = scaler.fit_transform(X_train.reshape(-1, X_train.shape[-1])).reshape(
+    #     X_train.shape
+    # )
+    # X_test = scaler.transform(X_test.reshape(-1, X_test.shape[-1])).reshape(
+    #     X_test.shape
+    # )
 
     # encode class values as integers
     encoder = LabelEncoder()
@@ -64,7 +66,7 @@ def read_prepare_data(feature_vector_length):
     y_train = to_categorical(y_train_encoded, num_classes)
     y_test = to_categorical(y_test_encoded, num_classes)
 
-    return X_train, X_test, y_train, y_test
+    return X_train, X_test, y_train_encoded, y_test_encoded
 
 
 def train_kfold_model(X_train, X_test, y_train, y_test, input_shape):
@@ -74,7 +76,7 @@ def train_kfold_model(X_train, X_test, y_train, y_test, input_shape):
 
     # create the datasets and initialize the K-fold split
     X = np.vstack((X_train, X_test))
-    y = np.vstack((y_train, y_test))
+    y = np.append(y_train, y_test)
     kf = KFold(n_splits=5)
     kf.get_n_splits(X)
 
@@ -90,13 +92,13 @@ def train_kfold_model(X_train, X_test, y_train, y_test, input_shape):
         model.add(Dense(5))
         model.add(LeakyReLU(alpha=0.05))
         model.add(BatchNormalization())
-        model.add(Dense(num_classes))
-        model.add(LeakyReLU(alpha=0.05))
-        model.add(BatchNormalization())
+        model.add(Dense(1, activation="sigmoid"))
+        # model.add(LeakyReLU(alpha=0.05))
+        # model.add(BatchNormalization())
 
         # compile the model
         model.compile(
-            loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"]
+            loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"]
         )
 
         # Define Tensorboard as a Keras callback
@@ -120,6 +122,13 @@ def train_kfold_model(X_train, X_test, y_train, y_test, input_shape):
             verbose=1,
             callbacks=keras_callbacks,
         )
+
+        # get the incorrect predictions made by the model
+        predictions = model.predict(X_test)
+        indices = [i for i, v in enumerate(
+            predictions) if predictions[i] != y_test[i]]
+        subset_of_wrongly_predicted = [X_test[i] for i in indices]
+        print(subset_of_wrongly_predicted)
 
         # generate generalization metrics
         scores = model.evaluate(X_test, y_test, verbose=0)
@@ -150,31 +159,6 @@ def train_kfold_model(X_train, X_test, y_train, y_test, input_shape):
     plot_model(model, to_file="mlp-kfold.png", show_shapes=True)
 
 
-def train_evaluate_model(X_train, X_test, y_train, y_test, input_shape):
-    # create the model
-    model = Sequential()
-    model.add(Dense(10, input_shape=input_shape))
-    model.add(LeakyReLU(alpha=0.05))
-    model.add(Dense(5))
-    model.add(LeakyReLU(alpha=0.05))
-    model.add(Dense(num_classes))
-    model.add(LeakyReLU(alpha=0.05))
-
-    # configure the model and start training
-    model.compile(
-        loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"]
-    )
-    history = model.fit(
-        X_train, y_train, epochs=10, batch_size=32, verbose=1, validation_split=0.2
-    )
-
-    # test the model after training
-    test_results = model.evaluate(X_test, y_test, verbose=1)
-    print(
-        f"Test results - Loss: {test_results[0]} - Accuracy: {100 * test_results[1]}%"
-    )
-
-
 # configuration options
 feature_vector_length = 8
 num_classes = 2
@@ -186,5 +170,4 @@ X_train, X_test, y_train, y_test = read_prepare_data(feature_vector_length)
 input_shape = (feature_vector_length,)
 
 # test the model after training
-# train_evaluate_model(X_train, X_test, y_train, y_test, input_shape)
 train_kfold_model(X_train, X_test, y_train, y_test, input_shape)

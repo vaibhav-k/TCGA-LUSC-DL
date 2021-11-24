@@ -24,16 +24,16 @@ def read_prepare_data():
     # reshape the datasets for CNN
     X_train.drop("case_id", inplace=True, axis=1)
     X_train = X_train.to_numpy()
-    scaler = StandardScaler()
-    X_train = scaler.fit_transform(X_train.reshape(-1, X_train.shape[-1])).reshape(
-        X_train.shape
-    )
+    # scaler = StandardScaler()
+    # X_train = scaler.fit_transform(X_train.reshape(-1, X_train.shape[-1])).reshape(
+    #     X_train.shape
+    # )
     X_train = X_train.reshape(X_train.shape[0], X_train.shape[1] // 2, 2)
     X_test.drop("case_id", inplace=True, axis=1)
     X_test = X_test.to_numpy()
-    X_test = scaler.transform(X_test.reshape(-1, X_test.shape[-1])).reshape(
-        X_test.shape
-    )
+    # X_test = scaler.transform(X_test.reshape(-1, X_test.shape[-1])).reshape(
+    #     X_test.shape
+    # )
     X_test = X_test.reshape(X_test.shape[0], X_test.shape[1] // 2, 2)
 
     # encode class values as integers
@@ -96,6 +96,13 @@ def train_model(X, y):
             verbose=1,
             callbacks=keras_callbacks,
         )
+
+        # get the incorrect predictions made by the model
+        predictions = model.predict(X[test])
+        indices = [i for i, v in enumerate(
+            predictions) if predictions[i] != y[test][i]]
+        subset_of_wrongly_predicted = [X_test[i] for i in indices]
+        print(subset_of_wrongly_predicted)
 
         # generate generalization metrics
         try:
@@ -173,4 +180,4 @@ y = np.append(y_train_encoded, y_test_encoded)
 
 # evaluate the model with standardized dataset
 train_model(X, y)
-train_time_distributed(X, y)
+# train_time_distributed(X, y)

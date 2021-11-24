@@ -1,5 +1,6 @@
 import glob
 import pandas as pd
+import math
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.image import imread
@@ -49,14 +50,14 @@ def read_prepare_data():
     # the number of images, shape of the image, and the number of channels
     X_test = tmp.reshape(101, 2, 4, 1)
 
-    # normalize the test and train data
-    scaler = StandardScaler()
-    X_train = scaler.fit_transform(X_train.reshape(-1, X_train.shape[-1])).reshape(
-        X_train.shape
-    )
-    X_test = scaler.transform(X_test.reshape(-1, X_test.shape[-1])).reshape(
-        X_test.shape
-    )
+    # # normalize the test and train data
+    # scaler = StandardScaler()
+    # X_train = scaler.fit_transform(X_train.reshape(-1, X_train.shape[-1])).reshape(
+    #     X_train.shape
+    # )
+    # X_test = scaler.transform(X_test.reshape(-1, X_test.shape[-1])).reshape(
+    #     X_test.shape
+    # )
 
     # encode class values as integers
     encoder = LabelEncoder()
@@ -156,6 +157,13 @@ def train_vanilla_model(X, y):
             callbacks=keras_callbacks,
         )
 
+        # get the incorrect predictions made by the model
+        predictions = model.predict(X[test])
+        indices = [i for i, v in enumerate(
+            predictions) if predictions[i] != y[test][i]]
+        subset_of_wrongly_predicted = [X_test[i] for i in indices]
+        print(subset_of_wrongly_predicted)
+
         # generate generalization metrics
         scores = model.evaluate(X[test], y[test], verbose=0)
         print(
@@ -214,7 +222,7 @@ def train_transfer_model(X, y):
             loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"]
         )
 
-        # Define Tensorboard as a Keras callback
+        # define Tensorboard as a Keras callback
         tensorboard = TensorBoard(
             log_dir="logs/fit/cnn-transfer/", histogram_freq=1, write_images=True
         )
@@ -236,7 +244,14 @@ def train_transfer_model(X, y):
             callbacks=keras_callbacks,
         )
 
-        # Generate generalization metrics
+        # get the incorrect predictions made by the model
+        predictions = model.predict(X[test])
+        indices = [i for i, v in enumerate(
+            predictions) if predictions[i] != y[test][i]]
+        subset_of_wrongly_predicted = [X_test[i] for i in indices]
+        print(subset_of_wrongly_predicted)
+
+        # generate generalization metrics
         scores = model.evaluate(X[test], y[test], verbose=0)
         print(
             f"Score for fold {fold_no}: {model.metrics_names[0]} of {scores[0]}; {model.metrics_names[1]} of {scores[1]*100}%"
@@ -244,7 +259,7 @@ def train_transfer_model(X, y):
         acc_per_fold.append(scores[1] * 100)
         loss_per_fold.append(scores[0])
 
-        # Increase fold number
+        # increase fold number
         fold_no += 1
 
     # provide the average scores
@@ -271,7 +286,7 @@ X_train_rgb_resized, X_test_rgb_resized = read_resized_images()
 
 # join the training and testing data for cross validation
 X = np.vstack((X_train, X_test))
-X_rgb_resized = np.vstack((X_train_rgb_resized, X_test_rgb_resized))
+# X_rgb_resized = np.vstack((X_train_rgb_resized, X_test_rgb_resized))
 y = np.append(y_train_encoded, y_test_encoded)
 
 # convert the grayscale images to RGB for transfer learning
@@ -282,7 +297,7 @@ y = np.append(y_train_encoded, y_test_encoded)
 # resize_images()
 
 # evaluate the model using the vanilla CNN model
-# train_vanilla_model(X, y)
+train_vanilla_model(X, y)
 
 # evaluate the model using transfer learning
-train_transfer_model(X_rgb_resized, y)
+# train_transfer_model(X_rgb_resized, y)
