@@ -126,9 +126,8 @@ def train_vanilla_model(X, y):
         model.add(BatchNormalization())
         model.add(Flatten())
         model.add(Dropout(0.2))
-        model.add(Dense(1, input_shape=(2, 4, 1)))
-        model.add(LeakyReLU(alpha=0.05))
         model.add(BatchNormalization())
+        model.add(Dense(1, input_shape=(2, 4, 1), activation="sigmoid"))
 
         # compile the model
         model.compile(
@@ -214,8 +213,7 @@ def train_transfer_model(X, y):
         model.add(base_model)
         model.add(Flatten())
         model.add(Dropout(0.2))
-        model.add(Dense(1))
-        model.add(LeakyReLU(alpha=0.05))
+        model.add(Dense(1, activation="sigmoid"))
 
         # compile the model
         model.compile(
@@ -286,7 +284,7 @@ X_train_rgb_resized, X_test_rgb_resized = read_resized_images()
 
 # join the training and testing data for cross validation
 X = np.vstack((X_train, X_test))
-# X_rgb_resized = np.vstack((X_train_rgb_resized, X_test_rgb_resized))
+X_rgb_resized = np.vstack((X_train_rgb_resized, X_test_rgb_resized))
 y = np.append(y_train_encoded, y_test_encoded)
 
 # convert the grayscale images to RGB for transfer learning
@@ -297,7 +295,7 @@ y = np.append(y_train_encoded, y_test_encoded)
 # resize_images()
 
 # evaluate the model using the vanilla CNN model
-train_vanilla_model(X, y)
+# train_vanilla_model(X, y)
 
 # evaluate the model using transfer learning
-# train_transfer_model(X_rgb_resized, y)
+train_transfer_model(X_rgb_resized, y)

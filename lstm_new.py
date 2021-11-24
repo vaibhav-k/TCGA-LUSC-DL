@@ -68,7 +68,7 @@ def train_model(X, y):
         model.add(LSTM(1))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization())
-        model.add(Dense(1, activation="softmax"))
+        model.add(Dense(1, activation="sigmoid"))
 
         # compile the model
         model.compile(

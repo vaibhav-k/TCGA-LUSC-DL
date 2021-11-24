@@ -93,8 +93,6 @@ def train_kfold_model(X_train, X_test, y_train, y_test, input_shape):
         model.add(LeakyReLU(alpha=0.05))
         model.add(BatchNormalization())
         model.add(Dense(1, activation="sigmoid"))
-        # model.add(LeakyReLU(alpha=0.05))
-        # model.add(BatchNormalization())
 
         # compile the model
         model.compile(
