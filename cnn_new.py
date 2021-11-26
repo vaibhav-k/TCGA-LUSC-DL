@@ -1,6 +1,5 @@
 import glob
 import pandas as pd
-import math
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.image import imread
@@ -12,11 +11,10 @@ from tensorflow.keras.layers import (
     Conv2D,
     Dropout,
     Flatten,
-    LeakyReLU,
 )
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import plot_model
-from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import StratifiedKFold
 from tensorflow.keras.applications.vgg16 import VGG16
 

@@ -1,11 +1,10 @@
 import pandas as pd
-import math
 import numpy as np
 from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras.layers import BatchNormalization, Dense, LeakyReLU
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import plot_model
-from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import KFold
 from tensorflow.keras.utils import to_categorical
 

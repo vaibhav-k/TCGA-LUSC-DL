@@ -2,11 +2,7 @@ from boruta import BorutaPy
 from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
 import numpy as np
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import BatchNormalization, Dense, LeakyReLU
 from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.model_selection import KFold
-from tensorflow.keras.utils import to_categorical
 
 
 def read_prepare_data(feature_vector_length):

@@ -1,9 +1,8 @@
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import KFold
-from tensorflow.keras.utils import to_categorical
 
 
 def read_prepare_data():
