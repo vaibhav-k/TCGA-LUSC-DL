@@ -11,6 +11,7 @@ from tensorflow.keras.layers import (
     Conv2D,
     Dropout,
     Flatten,
+    LeakyReLU,
 )
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import plot_model
@@ -119,8 +120,8 @@ def train_vanilla_model(X, y):
     fold_no = 1
     for train, test in kfold.split(X, y):
         model = Sequential()
-        model.add(Conv2D(1, kernel_size=2,
-                  activation="relu", input_shape=(2, 4, 1)))
+        model.add(Conv2D(1, kernel_size=2, input_shape=(2, 4, 1)))
+        model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization())
         model.add(Flatten())
         model.add(Dropout(0.2))
@@ -293,7 +294,7 @@ y = np.append(y_train_encoded, y_test_encoded)
 # resize_images()
 
 # evaluate the model using the vanilla CNN model
-# train_vanilla_model(X, y)
+train_vanilla_model(X, y)
 
 # evaluate the model using transfer learning
-train_transfer_model(X_rgb_resized, y)
+# train_transfer_model(X_rgb_resized, y)
