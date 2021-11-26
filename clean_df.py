@@ -3,7 +3,6 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 
-# function to convert age in days to age in years
 def read_tsv(file_read):
     # read the file
     clinical = []
